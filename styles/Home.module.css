@@ -97,7 +97,7 @@
 
 .center::before,
 .center::after {
-  content: '';
+  content: "";
   left: 50%;
   position: absolute;
   filter: blur(45px);
@@ -125,7 +125,7 @@
 
 .thirteen::before,
 .thirteen::after {
-  content: '';
+  content: "";
   position: absolute;
   z-index: -1;
 }
@@ -274,5 +274,37 @@
   }
   to {
     transform: rotate(0deg);
+  }
+}
+.burronShowProducts {
+  margin: 2rem 0;
+  padding: 0.5rem;
+  font-size: 16px;
+  border-radius: 8px;
+}
+.container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+.container > .item {
+  background-color: gray;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.item > .content {
+  padding: 1rem;
+}
+
+@media only screen and (max-width: 1024px) {
+  .container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media only screen and (max-width: 760px) {
+  .container {
+    grid-template-columns: 1fr;
   }
 }
