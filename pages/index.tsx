@@ -2,20 +2,22 @@ import React, { useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { getEconomicPackages } from "../services/packages";
+import { getPackages } from "../services/packages";
+
+interface Product {
+  title: string;
+  itinerary: string;
+  description: string;
+  thumbnail: string;
+  price: number;
+  popularity: number;
+}
 
 export default function Home() {
-  const [products, setProducts] = useState<
-    {
-      itinerary: string;
-      description: string;
-      thumbnail: string;
-      price: number;
-      popularity: number;
-    }[]
-  >([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [product, setProduct] = useState<Product | null>(null);
   const HandleShowProducts = () => {
-    getEconomicPackages().then(setProducts);
+    getPackages().then(setProducts);
   };
   return (
     <>
@@ -35,8 +37,12 @@ export default function Home() {
         </button>
         <div className={styles.container}>
           {products.map((product, index) => (
-            <div className={styles.item} key={index}>
-              <div style={{ width: "100%", height: 200, position: "relative" }}>
+            <div
+              className={styles.item}
+              key={index}
+              onClick={() => setProduct(product)}
+            >
+              <div style={{ width: "100%", height: 250, position: "relative" }}>
                 <Image
                   src={product.thumbnail}
                   alt={product.description}
@@ -45,12 +51,46 @@ export default function Home() {
                 />
               </div>
               <div className={styles.content}>
-                <p>{product.description}</p>
-                <p>{product.itinerary}</p>
+                <h3>{product.title}</h3>
+                <p className={styles.description}>{product.description}</p>
               </div>
             </div>
           ))}
         </div>
+        {product !== null && (
+          <div className={styles.modal}>
+            <div className={styles.modalContent}>
+              <h2>{product?.title}</h2>
+              <button
+                style={{
+                  float: "right",
+                  marginTop: "-30px",
+                  padding: 5,
+                  borderRadius: 8,
+                }}
+                onClick={() => setProduct(null)}
+              >
+                Cerrar
+              </button>
+              <div
+                style={{
+                  width: "100%",
+                  height: 250,
+                  position: "relative",
+                  margin: "2rem 0",
+                }}
+              >
+                <Image
+                  src={product.thumbnail}
+                  alt={product.description}
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
+              <p>{product.description}</p>
+            </div>
+          </div>
+        )}
       </main>
     </>
   );
